@@ -1,6 +1,7 @@
 from auth import AuthDB
 import tkinter as tk
 from tkinter import messagebox
+from menu import start_menu
 
 class LoginGui:
     # tkinter login and registration GUI
@@ -73,6 +74,7 @@ class LoginGui:
             print("Login succeful")
 
             # call here menu.py
+            start_menu()
         else:
             messagebox.showerror("Error", 'Incorrect username or password')
 
