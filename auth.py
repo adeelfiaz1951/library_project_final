@@ -12,9 +12,9 @@ class AuthDB:
         cursor = conn.cursor()
 
         cursor.execute("""
-            CREATE TABLR IF NOT EXISTS user(
+            CREATE TABLE IF NOT EXISTS users(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user TEXT UNIQUE,
+                username TEXT UNIQUE,
                 email TEXT,
                 password TEXT           )
         """)
@@ -38,7 +38,7 @@ class AuthDB:
 
         try:
             cursor.execute(
-                "INSERT INTO user (username, email, password) VALUES(?, ?, ?)",
+                "INSERT INTO users (username, email, password) VALUES(?, ?, ?)",
                 (username, email, hashed)
             )
             conn.commit()
@@ -50,14 +50,14 @@ class AuthDB:
         
     # validate login
 
-    def validate_login(self, username, password):
+    def validate_user(self, username, password):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         hashed = self.hash_password(password)
         cursor.execute(
-            "SELECT * FROM user WHERE username = ? AND password = ?",
-            (username, password)
+            "SELECT * FROM users WHERE username = ? AND password = ?",
+            (username, hashed)
             )
         user = cursor.fetchone()
         conn.close()
