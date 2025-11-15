@@ -1,6 +1,6 @@
 from model import LibraryCatalog, Book, Member
 
-def start_menu()
+def start_menu():
     catalog = LibraryCatalog()
 
     while True:
