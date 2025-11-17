@@ -47,44 +47,45 @@ class Member:
     # Handle books, members, borrowing, JSON savings 
 class LibraryCatalog:
 
-    def __init__(self, file_path ='catalog.json'):
-        self.file_path = file_path,
-        self.books = [],
-        self.members = [],
+    def __init__(self, file_path ="catalog.json"):
+        self.file_path = file_path
+        self.books = []
+        self.members = []
         self.load_data()
 
     # Json handling
     def load_data(self):
-        # Load data from json create file if missing
+        """Loads data from JSON, creates file if missing."""
         try:
-            with open(self.file_path, 'r') as f:
-                data =  json.load(f)
+            with open(self.file_path, "r") as f:
+                data = json.load(f)
 
             # Load books
-
-            for b in data.get('books', []):
-                self.books.append(Book(b['book_id'], b['title'], b['author'], b['year'], b['genre']
+            for b in data.get("books", []):
+                self.books.append(Book(
+                    b["book_id"], b["title"], b["author"], b["year"], b["genre"]
                 ))
-            
-            # Load members
 
-            for m in data.get('members', []):
-                member = Member(m['member_id'], m['name'], m['email'])
-                member.borrowed_books = m.get('borrowed_books', [])
+            # Load members
+            for m in data.get("members", []):
+                member = Member(m["member_id"], m["name"], m["email"])
+                member.borrowed_books = m.get("borrowed_books", [])
                 self.members.append(member)
+
         except FileNotFoundError:
-            self.save_data()  # create a new file if missing
+            self.save_data()  # Create new file if missing
 
     def save_data(self):
-        #'Save all data to json'
-        data ={
-            'books': [b.to_dict() for b in self.books],
-            'members': [m.to_dict() for m in self.members]
+        """Saves all data to JSON."""
+        data = {
+            "books": [b.to_dict() for b in self.books],
+            "members": [m.to_dict() for m in self.members]
         }
 
-        with open(self.file_path, 'w') as f:
+        with open(self.file_path, "w") as f:
             json.dump(data, f, indent=4)
 
+    
     # Book management
 
     def add_book(self, book):
